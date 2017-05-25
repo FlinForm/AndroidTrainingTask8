@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Android Training Task8</string>
+    <string name="notifTitle">Alarm Clock</string>
+    <string name="notifText">Wake up!!!</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="prompt">   </string>
+
+    <string-array name="repeats">
+        <item>One time</item>
+        <item>Every day</item>
+        <item>Monday-Friday</item>
+    </string-array>
+</resources>
