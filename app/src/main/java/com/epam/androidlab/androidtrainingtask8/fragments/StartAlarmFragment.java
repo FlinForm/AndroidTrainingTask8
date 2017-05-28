@@ -109,9 +109,9 @@ public class StartAlarmFragment extends Fragment {
                 true);
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
-        startAlarm(alarm.getTimeInMillis());
         getContext().sendBroadcast(new Intent("myIntent").putExtra("RINGTONE",
                 alarmRingtoneSpinner.getSelectedItem().toString()));
+        startAlarm(alarm.getTimeInMillis());
         cancel();
     }
 
@@ -155,6 +155,6 @@ public class StartAlarmFragment extends Fragment {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
         manager.cancel(pendingIntent);
-        manager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+        manager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 3000, pendingIntent);
     }
 }

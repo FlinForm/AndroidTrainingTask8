@@ -9,4 +9,5 @@
     <color name="alarmFragmentNumbersColor">#0d1212</color>
     <color name="activityBackground">#c0bb8c</color>
     <color name="cardViewBackground">#e2c167</color>
+    <color name="wakeupBackground">#484a4a</color>
 </resources>

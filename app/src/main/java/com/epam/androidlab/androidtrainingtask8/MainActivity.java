@@ -25,11 +25,14 @@ public class MainActivity extends AppCompatActivity {
     private static List<Ringtone> ringtones;
     private static List<MyAlarm> alarms;
     private static RecyclerView recyclerView;
+    public static MainActivity activity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        activity = this;
 
         alarms = new ArrayList<>();
         ringtones = getSystemRingtones(this);

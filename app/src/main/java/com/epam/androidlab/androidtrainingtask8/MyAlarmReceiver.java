@@ -1,18 +1,48 @@
 package com.epam.androidlab.androidtrainingtask8;
 
+import android.app.KeyguardManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
+import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        sendNotification(context);
+
+        KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+        if( myKM.inKeyguardRestrictedInputMode()) {
+            System.out.println("isLocked");
+            turnOnScreen();
+            showAlarm(context);
+
+        } else {
+            System.out.println("isUnlocked");
+            sendNotification(context);
+        }
+    }
+
+
+    private void showAlarm(Context context) {
+        Intent i = new Intent();
+        i.setClassName("com.epam.androidlab.androidtrainingtask8",
+                "com.epam.androidlab.androidtrainingtask8.WakeupActivity");
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(i);
+    }
+
+    private void turnOnScreen() {
+        PowerManager.WakeLock screenLock = ((PowerManager) MainActivity.activity
+                .getSystemService(Context.POWER_SERVICE))
+                .newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+        screenLock.acquire();
+        screenLock.release();
     }
 
     private void sendNotification(Context context) {
