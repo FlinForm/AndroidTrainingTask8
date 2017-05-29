@@ -11,9 +11,15 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
+
 public class MyAlarmReceiver extends BroadcastReceiver {
+    private static MyAlarm alarm;
+    private static Thread playThread;
+
     @Override
     public void onReceive(Context context, Intent intent) {
+        getAlarmForName(intent.getStringExtra("ALARM_NAME"));
 
         KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         if( myKM.inKeyguardRestrictedInputMode()) {
@@ -21,12 +27,33 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             turnOnScreen();
             showAlarm(context);
 
+            new Thread(() -> playAlarmRingtone()).start();
+
         } else {
             System.out.println("isUnlocked");
             sendNotification(context);
         }
     }
 
+    public static Thread getPlayThread() {
+        return playThread;
+    }
+
+    private void playAlarmRingtone() {
+        while (true) {
+            if (!alarm.getAlarmRingtone().isPlaying()) {
+                alarm.getAlarmRingtone().play();
+            }
+        }
+    }
+
+    private void getAlarmForName(String name) {
+        for (int i = 0; i < MainActivity.getAlarms().size(); i++) {
+            if (MainActivity.getAlarms().get(i).getAlarmName().equalsIgnoreCase(name)) {
+                alarm = MainActivity.getAlarms().get(i);
+            }
+        }
+    }
 
     private void showAlarm(Context context) {
         Intent i = new Intent();
@@ -72,7 +99,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(id, builder.build());
     }
 
-    private Ringtone getRingtoneForName(Context context, String name) {
+    /*private Ringtone getRingtoneForName(Context context, String name) {
         Ringtone ringtone = null;
         for (int i = 0; i < MainActivity.getRingtones().size(); i++) {
             if (name.equals(MainActivity.getRingtones().get(i).getTitle(context))) {
@@ -80,5 +107,5 @@ public class MyAlarmReceiver extends BroadcastReceiver {
             }
         }
         return ringtone;
-    }
+    }*/
 }

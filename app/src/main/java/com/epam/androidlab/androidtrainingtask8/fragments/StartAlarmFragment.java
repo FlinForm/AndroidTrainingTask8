@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
@@ -23,7 +25,6 @@ import android.widget.TimePicker;
 import com.epam.androidlab.androidtrainingtask8.MainActivity;
 import com.epam.androidlab.androidtrainingtask8.MyAlarmReceiver;
 import com.epam.androidlab.androidtrainingtask8.R;
-import com.epam.androidlab.androidtrainingtask8.WakeupActivity;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 
@@ -32,8 +33,8 @@ import java.util.List;
 
 public class StartAlarmFragment extends Fragment {
     private Spinner alarmRingtoneSpinner;
-    private MediaPlayer player;
     private Spinner repeatSpinner;
+    private Ringtone ringtone;
     private TimePicker timePicker;
     private EditText editText;
     private View view;
@@ -51,17 +52,22 @@ public class StartAlarmFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         this.view = view;
 
-        player = new MediaPlayer();
-
         timePicker = (TimePicker) view.findViewById(R.id.timePicker);
 
         editText = (EditText) view.findViewById(R.id.editText);
 
         View startButton = view.findViewById(R.id.startButton);
-        startButton.setOnClickListener(event -> createAlarm());
+        startButton.setOnClickListener(event ->
+        {
+            stopPlayingRingtone();
+            createAlarm();
+        });
 
         View cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(event -> cancel());
+        cancelButton.setOnClickListener(event -> {
+            stopPlayingRingtone();
+            cancel();
+        });
 
         List<String> ringtones = getRingtonesNames();
 
@@ -77,10 +83,11 @@ public class StartAlarmFragment extends Fragment {
         alarmRingtoneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                stopPlayingRingtone();
                 if (alarmRingtoneSpinner.getSelectedItemPosition() != ringtones.size() - 1) {
-                    if (player.isPlaying() == true) {
-                        player.stop();
-                    }
+                     ringtone = MainActivity.getRingtones()
+                            .get(alarmRingtoneSpinner.getSelectedItemPosition());
+                    ringtone.play();
                 }
             }
 
@@ -91,8 +98,10 @@ public class StartAlarmFragment extends Fragment {
         });
     }
 
-    private void playRingtone() {
-        getRingtoneForName(alarmRingtoneSpinner.getSelectedItem().toString()).play();
+    private void stopPlayingRingtone() {
+        if (ringtone != null && ringtone.isPlaying()) {
+            ringtone.stop();
+        }
     }
 
     private void createAlarm() {
@@ -109,9 +118,9 @@ public class StartAlarmFragment extends Fragment {
                 true);
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
-        getContext().sendBroadcast(new Intent("myIntent").putExtra("RINGTONE",
-                alarmRingtoneSpinner.getSelectedItem().toString()));
-        startAlarm(alarm.getTimeInMillis());
+        /*getContext().sendBroadcast(new Intent("myIntent").putExtra("RINGTONE",
+                alarmRingtoneSpinner.getSelectedItem().toString()));*/
+        startAlarm(alarm.getTimeInMillis(), alarm.getAlarmName());
         cancel();
     }
 
@@ -122,7 +131,7 @@ public class StartAlarmFragment extends Fragment {
     private List<String> getRingtonesNames() {
         List<String> ringtones = new ArrayList<>();
         for (int i = 0; i < MainActivity.getRingtones().size(); i++) {
-            ringtones.add(MainActivity.getRingtones().get(i).getTitle(view.getContext()));
+            ringtones.add(MainActivity.getRingtones().get(i).getTitle(getContext()));
         }
         return ringtones;
     }
@@ -149,9 +158,10 @@ public class StartAlarmFragment extends Fragment {
         return null;
     }
 
-    public void startAlarm(long timeInMillis) {
+    public void startAlarm(long timeInMillis, String name) {
         AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext().getApplicationContext(), MyAlarmReceiver.class);
+        intent.putExtra("ALARM_NAME", name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
         manager.cancel(pendingIntent);

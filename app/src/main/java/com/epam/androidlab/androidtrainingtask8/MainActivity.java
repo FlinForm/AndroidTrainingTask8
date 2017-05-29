@@ -4,8 +4,10 @@ import android.app.*;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.*;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private static List<MyAlarm> alarms;
     private static RecyclerView recyclerView;
     public static MainActivity activity;
+    private static MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
         activity = this;
 
         alarms = new ArrayList<>();
+
+        mediaPlayer = new MediaPlayer();
+
         ringtones = getSystemRingtones(this);
 
         View floatingActionButton = findViewById(R.id.fab);
@@ -80,5 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static RecyclerView getRecyclerView() {
         return recyclerView;
+    }
+
+    public static MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 }

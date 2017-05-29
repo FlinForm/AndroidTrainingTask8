@@ -27,11 +27,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingTop="30dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/stopButton"
@@ -64,7 +62,5 @@
             android:text="Sleep for 5 min"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
-
     </LinearLayout>
-
 </LinearLayout>
