@@ -6,12 +6,12 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class MyAlarm implements Serializable {
-    private Ringtone alarmRingtone;
-    private RepeatLoop repeatLoop;
-    private String alarmName;
-    private int hours;
-    private int minutes;
-    private boolean isSwitchedOn;
+    private final Ringtone alarmRingtone;
+    private final RepeatLoop repeatLoop;
+    private final String alarmName;
+    private final int hours;
+    private final int minutes;
+    private final boolean isSwitchedOn;
 
 
     public MyAlarm(Ringtone alarmRingtone,

@@ -7,6 +7,8 @@
     <string name="wake_up">Wake Up!</string>
     <string name="start_button">Start</string>
     <string name="cancel_button">Cancel</string>
+    <string name="stop_alarm">Stop Alarm</string>
+    <string name="sleep_for_5_min">Sleep for 5 min</string>
 
     <string-array name="repeats">
         <item>One time</item>

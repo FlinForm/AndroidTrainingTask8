@@ -4,12 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -156,7 +152,7 @@ public class StartAlarmFragment extends Fragment {
         return null;
     }
 
-    public void startAlarm(long timeInMillis, String name) {
+    private void startAlarm(long timeInMillis, String name) {
         AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(getContext().getApplicationContext(), MyAlarmReceiver.class);
         intent.putExtra("ALARM_NAME", name);

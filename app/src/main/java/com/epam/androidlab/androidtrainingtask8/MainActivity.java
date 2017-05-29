@@ -1,16 +1,11 @@
 package com.epam.androidlab.androidtrainingtask8;
 
-import android.app.*;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.*;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,7 +83,4 @@ public class MainActivity extends AppCompatActivity {
         return recyclerView;
     }
 
-    public static MediaPlayer getMediaPlayer() {
-        return mediaPlayer;
-    }
 }
