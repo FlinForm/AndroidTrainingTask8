@@ -15,7 +15,6 @@ import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
     private static MyAlarm alarm;
-    private static Thread playThread;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -23,28 +22,17 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
         KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         if( myKM.inKeyguardRestrictedInputMode()) {
-            System.out.println("isLocked");
             turnOnScreen();
             showAlarm(context);
-
-            new Thread(() -> playAlarmRingtone()).start();
-
+            alarm.getAlarmRingtone().play();
         } else {
-            System.out.println("isUnlocked");
             sendNotification(context);
+            alarm.getAlarmRingtone().play();
         }
     }
 
-    public static Thread getPlayThread() {
-        return playThread;
-    }
-
-    private void playAlarmRingtone() {
-        while (true) {
-            if (!alarm.getAlarmRingtone().isPlaying()) {
-                alarm.getAlarmRingtone().play();
-            }
-        }
+    public static MyAlarm getAlarm() {
+        return alarm;
     }
 
     private void getAlarmForName(String name) {
@@ -56,11 +44,11 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     }
 
     private void showAlarm(Context context) {
-        Intent i = new Intent();
-        i.setClassName("com.epam.androidlab.androidtrainingtask8",
+        Intent intent = new Intent();
+        intent.setClassName("com.epam.androidlab.androidtrainingtask8",
                 "com.epam.androidlab.androidtrainingtask8.WakeupActivity");
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(i);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     private void turnOnScreen() {
@@ -82,7 +70,9 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                         .setContentText(context.getString(R.string.notifText));
 
         Intent intent = new Intent();
-        intent.setClassName("com.android.calendar", "com.android.calendar.LaunchActivity");
+        intent.setClassName("com.epam.androidlab.androidtrainingtask8",
+                "com.epam.androidlab.androidtrainingtask8.WakeupActivity");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addParentStack(MainActivity.class);
@@ -98,14 +88,4 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());
     }
-
-    /*private Ringtone getRingtoneForName(Context context, String name) {
-        Ringtone ringtone = null;
-        for (int i = 0; i < MainActivity.getRingtones().size(); i++) {
-            if (name.equals(MainActivity.getRingtones().get(i).getTitle(context))) {
-                ringtone = MainActivity.getRingtones().get(i);
-            }
-        }
-        return ringtone;
-    }*/
 }

@@ -1,5 +1,8 @@
 package com.epam.androidlab.androidtrainingtask8;
 
+import android.content.Context;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,14 +24,23 @@ public class WakeupActivity extends AppCompatActivity {
     }
 
     private void waitForFiveMinutes() {
-        /*try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
+        MyAlarmReceiver.getAlarm().getAlarmRingtone().stop();
+        SystemClock.sleep(300_000);
+        turnOnScreen();
+        MyAlarmReceiver.getAlarm().getAlarmRingtone().play();
     }
 
     private void stopPlaying() {
-        MyAlarmReceiver.getPlayThread().interrupt();
+        MyAlarmReceiver.getAlarm().getAlarmRingtone().stop();
+        finish();
+    }
+
+    private void turnOnScreen() {
+        PowerManager.WakeLock screenLock = ((PowerManager) MainActivity.activity
+                .getSystemService(Context.POWER_SERVICE))
+                .newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK |
+                        PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+        screenLock.acquire();
+        screenLock.release();
     }
 }
