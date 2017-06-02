@@ -105,8 +105,12 @@ public class StartAlarmFragment extends Fragment {
             Snackbar.make(view, "Enter, please, alarm name!", 1000).show();
             return;
         }
+        if ("".equals(alarmRingtoneSpinner.getSelectedItem().toString())) {
+            Snackbar.make(view, "Select alarm ringtone!", 1000).show();
+            return;
+        }
         MyAlarm alarm = new MyAlarm(
-                getRingtoneForName(alarmRingtoneSpinner.getSelectedItem().toString()),
+                alarmRingtoneSpinner.getSelectedItem().toString(),
                 editText.getText().toString(),
                 ringtoneRepeatCount(),
                 timePicker.getHour(),
@@ -114,7 +118,7 @@ public class StartAlarmFragment extends Fragment {
                 true);
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
-        startAlarm(alarm.getTimeInMillis(), alarm.getAlarmName());
+        startAlarm(alarm.getTimeInMillis(), alarm.getAlarmName(), ringtoneRepeatCount());
         cancel();
     }
 
@@ -130,35 +134,32 @@ public class StartAlarmFragment extends Fragment {
         return ringtones;
     }
 
-    private Ringtone getRingtoneForName(String name) {
-        Ringtone ringtone = null;
-        for (int i = 0; i < MainActivity.getRingtones().size(); i++) {
-            if (name.equals(MainActivity.getRingtones().get(i).getTitle(view.getContext()))) {
-                ringtone = MainActivity.getRingtones().get(i);
-            }
-        }
-        return ringtone;
-    }
-
-        private RepeatLoop ringtoneRepeatCount() {
+    private RepeatLoop ringtoneRepeatCount() {
         switch (repeatSpinner.getSelectedItem().toString()) {
             case "One time" :
                 return RepeatLoop.ONE_TIME;
             case "Every day":
                 return RepeatLoop.EVERY_DAY;
-            case "Monday-Friday":
-                return RepeatLoop.MONDAY_FRIDAY;
         }
         return null;
     }
 
-    private void startAlarm(long timeInMillis, String name) {
+    private void startAlarm(long timeInMillis, String name, RepeatLoop loop) {
         AlarmManager manager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext().getApplicationContext(), MyAlarmReceiver.class);
+        Intent intent = new Intent(getContext(), MyAlarmReceiver.class);
         intent.putExtra("ALARM_NAME", name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        manager.cancel(pendingIntent);
-        manager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+        switch (loop) {
+            case ONE_TIME:
+                manager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+                break;
+            case EVERY_DAY:
+                manager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        timeInMillis,
+                        AlarmManager.INTERVAL_DAY,
+                        pendingIntent);
+                break;
+        }
     }
 }

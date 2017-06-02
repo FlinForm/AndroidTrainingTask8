@@ -6,7 +6,6 @@
     android:keepScreenOn="false"
     android:orientation="vertical">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"

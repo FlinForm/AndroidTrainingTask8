@@ -9,7 +9,7 @@
         android:id="@+id/cv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/cardViewBackground"
+        app:cardBackgroundColor="@color/alarmFragmentHeaderBackground"
         app:cardCornerRadius="20dp">
 
         <RelativeLayout

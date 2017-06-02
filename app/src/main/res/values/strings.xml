@@ -13,6 +13,5 @@
     <string-array name="repeats">
         <item>One time</item>
         <item>Every day</item>
-        <item>Monday-Friday</item>
     </string-array>
 </resources>

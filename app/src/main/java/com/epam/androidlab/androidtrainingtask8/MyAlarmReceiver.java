@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Ringtone;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -14,19 +15,21 @@ import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
     private static MyAlarm alarm;
+    private static Ringtone ringtone;
+    private static NotificationManager notificationManager;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         getAlarmForName(intent.getStringExtra("ALARM_NAME"));
-
+        ringtone =  getRingtoneForName(alarm.getAlarmRingtone(), context);
         KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
-        if( myKM.inKeyguardRestrictedInputMode()) {
+        if(myKM.inKeyguardRestrictedInputMode()) {
             turnOnScreen();
             showAlarm(context);
-            alarm.getAlarmRingtone().play();
+           ringtone.play();
         } else {
             sendNotification(context);
-            alarm.getAlarmRingtone().play();
+            ringtone.play();
         }
     }
 
@@ -83,8 +86,26 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 );
         builder.setContentIntent(resultPendingIntent);
 
-        NotificationManager notificationManager =
+        notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, builder.build());
+    }
+
+    public static Ringtone getRingtone() {
+        return ringtone;
+    }
+
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
+
+    private Ringtone getRingtoneForName(String name, Context context) {
+        Ringtone ringtone = null;
+        for (int i = 0; i < MainActivity.getRingtones().size(); i++) {
+            if (name.equals(MainActivity.getRingtones().get(i).getTitle(context))) {
+                ringtone = MainActivity.getRingtones().get(i);
+            }
+        }
+        return ringtone;
     }
 }

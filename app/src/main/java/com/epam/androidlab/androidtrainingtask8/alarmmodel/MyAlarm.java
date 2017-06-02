@@ -2,11 +2,13 @@ package com.epam.androidlab.androidtrainingtask8.alarmmodel;
 
 import android.media.Ringtone;
 
+import com.epam.androidlab.androidtrainingtask8.MainActivity;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
 public class MyAlarm implements Serializable {
-    private final Ringtone alarmRingtone;
+    private final String alarmRingtone;
     private final RepeatLoop repeatLoop;
     private final String alarmName;
     private final int hours;
@@ -14,7 +16,7 @@ public class MyAlarm implements Serializable {
     private final boolean isSwitchedOn;
 
 
-    public MyAlarm(Ringtone alarmRingtone,
+    public MyAlarm(String alarmRingtone,
                    String alarmName,
                    RepeatLoop repeatLoop,
                    int hours,
@@ -43,7 +45,24 @@ public class MyAlarm implements Serializable {
         return alarmName;
     }
 
-    public Ringtone getAlarmRingtone() {
+    public String getAlarmRingtone() {
         return alarmRingtone;
     }
+
+    public RepeatLoop getRepeatLoop() {
+        return repeatLoop;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int getMinutes() {
+        return minutes;
+    }
+
+    public boolean isSwitchedOn() {
+        return isSwitchedOn;
+    }
+
 }

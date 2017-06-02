@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@color/activityBackground"
+        android:background="@color/alarmFragmentBackground"
         android:scrollbars="vertical" />
 
     <android.support.design.widget.FloatingActionButton

@@ -1,6 +1,7 @@
 package com.epam.androidlab.androidtrainingtask8;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ public class WakeupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
         setContentView(R.layout.activity_wakeup);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         View stopAlarmButton = findViewById(R.id.stopButton);
         stopAlarmButton.setOnClickListener(event -> stopPlaying());
@@ -24,15 +26,16 @@ public class WakeupActivity extends AppCompatActivity {
     }
 
     private void waitForFiveMinutes() {
-        MyAlarmReceiver.getAlarm().getAlarmRingtone().stop();
+        MyAlarmReceiver.getRingtone().stop();
         SystemClock.sleep(300_000);
         turnOnScreen();
-        MyAlarmReceiver.getAlarm().getAlarmRingtone().play();
+        MyAlarmReceiver.getRingtone().play();
     }
 
     private void stopPlaying() {
-        MyAlarmReceiver.getAlarm().getAlarmRingtone().stop();
+        MyAlarmReceiver.getRingtone().stop();
         finish();
+        MyAlarmReceiver.getNotificationManager().cancelAll();
     }
 
     private void turnOnScreen() {
