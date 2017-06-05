@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
@@ -44,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
 
         //sqlLiteParser = new SqlLiteParser(getApplicationContext());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
 
         //sqlLiteParser.loadAlarms(alarms);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(event -> startNewAlarm());
-        floatingActionButton.setImageResource(R.drawable.plus);
 
         RecycleViewAdapter adapter = new RecycleViewAdapter(alarms);
 

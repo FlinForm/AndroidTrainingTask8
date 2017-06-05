@@ -2,46 +2,31 @@
     android:id="@+id/linLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/alarmFragmentBackground"
+    android:background="@color/colorPrimaryDark"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp"
+    android:paddingTop="20dp">
 
     <TimePicker
         android:id="@+id/timePicker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/alarmFragmentBackground"
-        android:headerBackground="@color/alarmFragmentHeaderBackground"
-        android:numbersBackgroundColor="@color/alarmFragmentBackground"
-        android:numbersInnerTextColor="@color/alarmFragmentNumbersColor"
-        android:numbersSelectorColor="@color/alarmFragmentCursor"
+        android:headerBackground="@color/colorPrimaryDark"
+        android:numbersInnerTextColor="@color/primaryText"
         android:paddingBottom="20dp" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/repeatSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1"
-            android:entries="@array/repeats" />
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:elevation="1dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Name" />
-    </LinearLayout>
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:elevation="1dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        android:textColor="@color/primaryText" />
 
     <Spinner
         android:id="@+id/alarmRingtoneSpinner"
@@ -50,9 +35,19 @@
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp" />
 
+    <Spinner
+        android:id="@+id/repeatSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:entries="@array/repeats" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="30dp"
+        android:layout_weight="19.07"
         android:orientation="horizontal"
         android:padding="10dp">
 
@@ -68,7 +63,7 @@
             android:shadowDy="0"
             android:shadowRadius="7"
             android:text="@string/start_button"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/primaryText"
             android:textSize="20sp" />
 
         <Button
@@ -83,8 +78,7 @@
             android:shadowDy="0"
             android:shadowRadius="7"
             android:text="@string/cancel_button"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/primaryText"
             android:textSize="20sp" />
     </LinearLayout>
-
 </LinearLayout>
