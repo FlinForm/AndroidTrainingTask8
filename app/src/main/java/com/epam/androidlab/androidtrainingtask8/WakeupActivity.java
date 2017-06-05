@@ -29,10 +29,10 @@ public class WakeupActivity extends AppCompatActivity {
         if (MyAlarmReceiver.getRingtone() == null) {
             return;
         }
-        MyAlarmReceiver.getRingtone().stop();
-        SystemClock.sleep(300_000);
         turnOnScreen();
-        MyAlarmReceiver.getRingtone().play();
+        MyAlarmReceiver.getRingtone().stop();
+        MyAlarmReceiver.getAlarm().sleepForFiveMinutes(getApplicationContext());
+        finish();
     }
 
     private void stopPlaying() {

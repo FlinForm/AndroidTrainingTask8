@@ -16,7 +16,9 @@ public class MyAlarm implements Serializable {
     private final String alarmName;
     private final int hours;
     private final int minutes;
-    private final boolean isSwitchedOn;
+    private boolean isSwitchedOn;
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
     public MyAlarm(String alarmRingtone,
                    String alarmName,
@@ -67,27 +69,43 @@ public class MyAlarm implements Serializable {
         return isSwitchedOn;
     }
 
-    public void startAlarm(Context context) {
+    public void setSwitchedOn(boolean switchedOn) {
+        isSwitchedOn = switchedOn;
+    }
+
+    public AlarmManager getAlarmManager() {
+        return alarmManager;
+    }
+
+    public PendingIntent getPendingIntent() {
+        return pendingIntent;
+    }
+
+    public void startAlarm(Context context, long time) {
         if (!isSwitchedOn) {
             return;
         }
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, MyAlarmReceiver.class);
         intent.putExtra("ALARM_NAME", alarmName);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0,
+        pendingIntent = PendingIntent.getBroadcast(context, 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        manager.cancel(pendingIntent);
         switch (repeatLoop) {
             case ONE_TIME:
-                manager.set(AlarmManager.RTC_WAKEUP, getTimeInMillis(), pendingIntent);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, time, pendingIntent);
                 break;
-
             case EVERY_DAY:
-                manager.setRepeating(AlarmManager.RTC_WAKEUP,
-                        getTimeInMillis(),
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                        time,
                         AlarmManager.INTERVAL_DAY,
                         pendingIntent);
                 break;
         }
+    }
+
+    public void sleepForFiveMinutes(Context context) {
+        alarmManager.cancel(pendingIntent);
+        startAlarm(context, System.currentTimeMillis() + 300_000);
     }
 }

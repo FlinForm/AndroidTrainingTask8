@@ -124,7 +124,7 @@ public class StartAlarmFragment extends Fragment {
         addAlarmToProvider(alarm);
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
-        alarm.startAlarm(getContext());
+        alarm.startAlarm(getContext(), alarm.getTimeInMillis());
         System.out.println("started");
         cancel();
     }
