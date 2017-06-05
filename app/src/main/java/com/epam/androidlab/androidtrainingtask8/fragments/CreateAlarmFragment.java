@@ -111,7 +111,7 @@ public class CreateAlarmFragment extends Fragment {
             Snackbar.make(view, "Enter, please, unique name!", 1000).show();
             return;
         }
-        if ("".equals(alarmRingtoneSpinner.getSelectedItem().toString())) {
+        if ("melody".equals(alarmRingtoneSpinner.getSelectedItem().toString())) {
             Snackbar.make(view, "Select alarm ringtone!", 1000).show();
             return;
         }
