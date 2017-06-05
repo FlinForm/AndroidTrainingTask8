@@ -20,7 +20,7 @@ import android.view.View;
 import com.epam.androidlab.androidtrainingtask8.R;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
-import com.epam.androidlab.androidtrainingtask8.fragments.StartAlarmFragment;
+import com.epam.androidlab.androidtrainingtask8.fragments.CreateAlarmFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
-        floatingActionButton.setOnClickListener(event -> startNewAlarm());
+        floatingActionButton.setOnClickListener(event -> createNewAlarm());
 
         RecycleViewAdapter adapter = new RecycleViewAdapter(alarms);
 
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
+    // This method is used to handle delete option when long tapping on alarm in RecucleView
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         String[] title = item.getTitle().toString().split(" ");
@@ -87,12 +88,13 @@ public class MainActivity extends AppCompatActivity {
         return ringtoneList;
     }
 
-    private void startNewAlarm() {
+    private void createNewAlarm() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.rLayout, new StartAlarmFragment());
+        transaction.add(R.id.rLayout, new CreateAlarmFragment());
         transaction.commit();
     }
 
+    // Fills alarms array with saved data from SQLite database using ContentProvider
     private void fillAlarmsArray() {
         Cursor cursor = getContentResolver().query(ALARMS_URI, null, null, null, null);
         alarms = new ArrayList<>();
@@ -111,14 +113,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void removeAlarm(String name, int position) {
-        if (position > alarms.size()) {
+        // Here is used recursion because of ConcurrentModificationException
+        if (position >= alarms.size()) {
             return;
         }
-        if (alarms.get(position).getAlarmName().equals(name)){
+        if (alarms.get(position).getAlarmName().equals(name)) {
             alarms.remove(alarms.get(position));
+            removeAlarmFromProvider(name);
             recyclerView.removeAllViews();
             recyclerView.getAdapter().notifyDataSetChanged();
-            removeAlarmFromProvider(name);
             return;
         } else {
             removeAlarm(name, ++position);

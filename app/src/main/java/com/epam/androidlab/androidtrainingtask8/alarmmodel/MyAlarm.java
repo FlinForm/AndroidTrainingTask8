@@ -5,10 +5,14 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.epam.androidlab.androidtrainingtask8.activities.MyAlarmReceiver;
+import com.epam.androidlab.androidtrainingtask8.services.MyAlarmReceiver;
 
 import java.io.Serializable;
 import java.util.Calendar;
+
+/**
+ * This class describes the alarm
+ */
 
 public class MyAlarm implements Serializable {
     private final String alarmRingtone;
@@ -34,6 +38,7 @@ public class MyAlarm implements Serializable {
         this.isSwitchedOn = isSwitchedOn;
     }
 
+    // This method formatting time and converting it to String
     public String getTime() {
         String formattedHours = Integer.toString(hours);
         String formattedMinutes = Integer.toString(minutes);
@@ -46,6 +51,8 @@ public class MyAlarm implements Serializable {
         return formattedHours + ":" + formattedMinutes;
     }
 
+    // Makes time in milliseconds from "hours" and "minutes" variables,
+    // that needed to start AlarmManager
     public long getTimeInMillis() {
         Calendar calendar; calendar = Calendar.getInstance();
         calendar.set(Calendar.HOUR_OF_DAY, hours);

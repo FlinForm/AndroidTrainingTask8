@@ -24,7 +24,12 @@ import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StartAlarmFragment extends Fragment {
+/**
+ * This fragment displays UI window, where we can create new alarm
+ * and add it to alarms array in Main activity.
+ */
+
+public class CreateAlarmFragment extends Fragment {
     private final Uri ALARM_URI = Uri
             .parse("content://com.epam.androidlab.androidtrainingtask8.serialization/alarms");
     private Spinner alarmRingtoneSpinner;
@@ -93,6 +98,7 @@ public class StartAlarmFragment extends Fragment {
         });
     }
 
+    // Stop playing chosen ringtone when alarm is created
     private void stopPlayingRingtone() {
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
@@ -132,13 +138,14 @@ public class StartAlarmFragment extends Fragment {
         cv.put("minutes", alarm.getMinutes());
         cv.put("switched", alarm.isSwitchedOn());
         Uri uri = getActivity().getContentResolver().insert(ALARM_URI, cv);
-        System.out.println("result uri: " + uri.toString());
     }
 
+    // Cancels current fragment when alarm is created
     private void cancel() {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
     }
 
+    // Checks uniqueness alarm name
     private boolean isUniqueNameChoosen(String name) {
         for (MyAlarm alarm : MainActivity.getAlarms()) {
             if (alarm.getAlarmName().equals(name)) {
@@ -150,6 +157,7 @@ public class StartAlarmFragment extends Fragment {
         return true;
     }
 
+    // Returns a String list of Ringtone names for inflating alarmRingtoneSpinner
     private List<String> getRingtonesNames() {
         List<String> ringtones = new ArrayList<>();
         for (int i = 0; i < MainActivity.getRingtones().size(); i++) {

@@ -9,6 +9,11 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.epam.androidlab.androidtrainingtask8.R;
+import com.epam.androidlab.androidtrainingtask8.services.MyAlarmReceiver;
+
+/**
+ * This activity will be launched, when AlarmManager fired
+ */
 
 public class WakeupActivity extends AppCompatActivity {
 

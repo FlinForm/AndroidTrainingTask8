@@ -1,4 +1,4 @@
-package com.epam.androidlab.androidtrainingtask8.activities;
+package com.epam.androidlab.androidtrainingtask8.services;
 
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
@@ -12,6 +12,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
 import com.epam.androidlab.androidtrainingtask8.R;
+import com.epam.androidlab.androidtrainingtask8.activities.MainActivity;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 
 public class MyAlarmReceiver extends BroadcastReceiver {

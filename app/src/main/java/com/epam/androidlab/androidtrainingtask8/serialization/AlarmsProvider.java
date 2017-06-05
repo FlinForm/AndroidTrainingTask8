@@ -71,6 +71,11 @@ public class AlarmsProvider extends ContentProvider {
                         @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
             switch (uriMatcher.match(uri)) {
+                case URI_ALARMS:
+                    if (TextUtils.isEmpty(sortOrder)) {
+                        sortOrder = ALARM_NAME + " ASC";
+                    }
+                     break;
                 case URI_ALARMS_ID:
                     String id = uri.getLastPathSegment();
                     if (TextUtils.isEmpty(selection)) {
@@ -115,6 +120,8 @@ public class AlarmsProvider extends ContentProvider {
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
         switch (uriMatcher.match(uri)) {
+            case URI_ALARMS:
+                break;
             case URI_ALARMS_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
