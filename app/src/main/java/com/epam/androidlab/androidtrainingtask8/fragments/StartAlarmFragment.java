@@ -2,13 +2,16 @@ package com.epam.androidlab.androidtrainingtask8.fragments;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StartAlarmFragment extends Fragment {
+    private final Uri ALARM_URI = Uri
+            .parse("content://com.epam.androidlab.androidtrainingtask8.serialization/alarms");
     private Spinner alarmRingtoneSpinner;
     private Spinner repeatSpinner;
     private Ringtone ringtone;
@@ -116,10 +121,24 @@ public class StartAlarmFragment extends Fragment {
                 timePicker.getHour(),
                 timePicker.getMinute(),
                 true);
+        addAlarmToProvider(alarm);
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
         startAlarm(alarm.getTimeInMillis(), alarm.getAlarmName(), ringtoneRepeatCount());
+        System.out.println("started");
         cancel();
+    }
+
+    private void addAlarmToProvider(MyAlarm alarm) {
+        ContentValues cv = new ContentValues();
+        cv.put("name", alarm.getAlarmName());
+        cv.put("ringtone", alarm.getAlarmRingtone());
+        cv.put("repeating", alarm.getRepeatLoop().toString());
+        cv.put("hours", alarm.getHours());
+        cv.put("minutes", alarm.getMinutes());
+        cv.put("switched", alarm.isSwitchedOn());
+        Uri uri = getActivity().getContentResolver().insert(ALARM_URI, cv);
+        System.out.println("result uri: " + uri.toString());
     }
 
     private void cancel() {
@@ -135,13 +154,8 @@ public class StartAlarmFragment extends Fragment {
     }
 
     private RepeatLoop ringtoneRepeatCount() {
-        switch (repeatSpinner.getSelectedItem().toString()) {
-            case "One time" :
-                return RepeatLoop.ONE_TIME;
-            case "Every day":
-                return RepeatLoop.EVERY_DAY;
-        }
-        return null;
+        return repeatSpinner.getSelectedItem() == RepeatLoop.ONE_TIME ?
+                RepeatLoop.ONE_TIME : RepeatLoop.EVERY_DAY;
     }
 
     private void startAlarm(long timeInMillis, String name, RepeatLoop loop) {
@@ -150,15 +164,19 @@ public class StartAlarmFragment extends Fragment {
         intent.putExtra("ALARM_NAME", name);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), 0,
                 intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        manager.cancel(pendingIntent);
         switch (loop) {
             case ONE_TIME:
-                manager.set(AlarmManager.RTC_WAKEUP, timeInMillis, pendingIntent);
+                manager.set(AlarmManager.RTC_WAKEUP, 3000, pendingIntent);
+                System.out.println("One day");
                 break;
+
             case EVERY_DAY:
                 manager.setRepeating(AlarmManager.RTC_WAKEUP,
                         timeInMillis,
                         AlarmManager.INTERVAL_DAY,
                         pendingIntent);
+                System.out.println("Every day");
                 break;
         }
     }

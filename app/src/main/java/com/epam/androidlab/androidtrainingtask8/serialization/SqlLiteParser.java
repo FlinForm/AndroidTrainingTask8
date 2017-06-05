@@ -1,14 +1,12 @@
-package com.epam.androidlab.androidtrainingtask8.serialization;
+/*package com.epam.androidlab.androidtrainingtask8.serialization;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.epam.androidlab.androidtrainingtask8.MainActivity;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 
@@ -46,7 +44,7 @@ public class SqlLiteParser {
                     ));
                 }
             }
-        System.out.println(sqLiteDatabase.delete("alarm", null, null));
+        System.out.println("ssql alarms size:" + alarms.size());
         c.close();
     }
 
@@ -54,8 +52,10 @@ public class SqlLiteParser {
         if (alarms == null) {
             return;
         }
+        System.out.println(alarms.size());
         ContentValues contentValues = new ContentValues();
         for (MyAlarm alarm : alarms) {
+            contentValues.clear();
             contentValues.put("melody", alarm.getAlarmRingtone());
             contentValues.put("name", alarm.getAlarmName());
             contentValues.put("repeating", alarm.getRepeatLoop().toString());
@@ -76,6 +76,7 @@ public class SqlLiteParser {
         @Override
         public void onCreate(SQLiteDatabase db) {
 
+            System.out.println("onCreate");
             db.execSQL("create table alarm ("
                     + "id integer primary key autoincrement,"
                     + "melody text,"
@@ -85,10 +86,8 @@ public class SqlLiteParser {
                     + "minutes integer" + ");");
         }
 
-
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         }
     }
-}
+}*/

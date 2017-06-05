@@ -26,6 +26,9 @@ public class WakeupActivity extends AppCompatActivity {
     }
 
     private void waitForFiveMinutes() {
+        if (MyAlarmReceiver.getRingtone() == null) {
+            return;
+        }
         MyAlarmReceiver.getRingtone().stop();
         SystemClock.sleep(300_000);
         turnOnScreen();
@@ -33,6 +36,9 @@ public class WakeupActivity extends AppCompatActivity {
     }
 
     private void stopPlaying() {
+        if (MyAlarmReceiver.getRingtone() == null) {
+            return;
+        }
         MyAlarmReceiver.getRingtone().stop();
         finish();
         MyAlarmReceiver.getNotificationManager().cancelAll();

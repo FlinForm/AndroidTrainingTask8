@@ -13,11 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.fragments.StartAlarmFragment;
-import com.epam.androidlab.androidtrainingtask8.serialization.SqlLiteParser;
+//import com.epam.androidlab.androidtrainingtask8.serialization.SqlLiteParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private static List<MyAlarm> alarms;
     private static RecyclerView recyclerView;
     public static MainActivity activity;
-    SqlLiteParser sqlLiteParser;
+   // SqlLiteParser sqlLiteParser;
     private CardView cardView;
 
     @Override
@@ -37,16 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
         activity = this;
         alarms = new ArrayList<>();
-        ringtones = initAlarmsAndRingtones(this);
-        sqlLiteParser = new SqlLiteParser(getApplicationContext());
+        ringtones = initRingtones(this);
+        //sqlLiteParser = new SqlLiteParser(getApplicationContext());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        sqlLiteParser.loadAlarms(alarms);
-        System.out.println("alarms size " + alarms.size());
-        for (int i = 0; i < alarms.size(); i++) {
-            System.out.println(alarms.get(i).getAlarmName() + " "
-                    + alarms.get(i).getAlarmRingtone());
-        }
+        //sqlLiteParser.loadAlarms(alarms);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(event -> startNewAlarm());
@@ -59,19 +53,18 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
-
-        cardView = (CardView) findViewById(R.id.cv);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (alarms != null) {
-            sqlLiteParser.saveAlarms(alarms);
+    /*@Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        //super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.recycler_view) {
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+            menu.add(Menu.NONE, 1, 1, "delete");
         }
-    }
+    }*/
 
-    private List<Ringtone> initAlarmsAndRingtones(Context context) {
+    private List<Ringtone> initRingtones(Context context) {
         List<Ringtone> ringtoneList = new ArrayList<>();
 
         new AsyncTask<Void, Void, Void>() {

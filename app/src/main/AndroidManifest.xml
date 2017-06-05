@@ -12,7 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <receiver android:name=".MyAlarmReceiver" />
+
+        <provider
+            android:name=".serialization.AlarmsProvider"
+            android:authorities="com.epam.androidlab.androidtrainingtask8.serialization" />
 
         <activity android:name=".MainActivity">
             <intent-filter>
