@@ -1,34 +1,37 @@
 package com.epam.androidlab.androidtrainingtask8;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
+import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 import com.epam.androidlab.androidtrainingtask8.fragments.StartAlarmFragment;
-//import com.epam.androidlab.androidtrainingtask8.serialization.SqlLiteParser;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private static final Uri ALARMS_URI =
+            Uri.parse("content://com.epam.androidlab.androidtrainingtask8.serialization/alarms");
     private static List<Ringtone> ringtones;
     private static List<MyAlarm> alarms;
     private static RecyclerView recyclerView;
     public static MainActivity activity;
    // SqlLiteParser sqlLiteParser;
-    private CardView cardView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         activity = this;
-        alarms = new ArrayList<>();
         ringtones = initRingtones(this);
+        fillAlarmsArray();
+
         //sqlLiteParser = new SqlLiteParser(getApplicationContext());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
@@ -59,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         String[] title = item.getTitle().toString().split(" ");
-        removeAlarm(title[1]);
-        recyclerView.getAdapter().notifyDataSetChanged();
+        removeAlarm(title[1], 0);
         return true;
     }
 
@@ -94,12 +97,41 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private MyAlarm removeAlarm(String name) {
-        for (MyAlarm alarm : alarms) {
-            if (alarm.getAlarmName().equals(name))
-                alarms.remove(alarm);
+    private void fillAlarmsArray() {
+        Cursor cursor = getContentResolver().query(ALARMS_URI, null, null, null, null);
+        alarms = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                MyAlarm alarm = new MyAlarm(
+                        cursor.getString(cursor.getColumnIndex("ringtone")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        RepeatLoop.valueOf(cursor.getString(cursor.getColumnIndex("repeating"))),
+                        cursor.getInt(cursor.getColumnIndex("hours")),
+                        cursor.getInt(cursor.getColumnIndex("minutes")),
+                        Boolean.parseBoolean(cursor.getString(cursor.getColumnIndex("switched"))));
+                alarms.add(alarm);
+                alarm.startAlarm(getApplicationContext(), alarm.getTimeInMillis());
+            }
+            cursor.close();
+    }
+
+    private void removeAlarm(String name, int position) {
+        if (position > alarms.size()) {
+            return;
         }
-        return null;
+        if (alarms.get(position).getAlarmName().equals(name)){
+            alarms.remove(alarms.get(position));
+            recyclerView.removeAllViews();
+            recyclerView.getAdapter().notifyDataSetChanged();
+            removeAlarmFromProvider(name);
+            return;
+        } else {
+            removeAlarm(name, ++position);
+        }
+    }
+
+    private void removeAlarmFromProvider(String name) {
+        String selection = "name = " + name + ";";
+        getContentResolver().delete(ALARMS_URI, selection, null);
     }
 
     public static List<Ringtone> getRingtones() {

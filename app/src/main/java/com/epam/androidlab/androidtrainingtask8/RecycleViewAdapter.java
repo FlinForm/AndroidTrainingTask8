@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
+import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 
 import java.util.List;
 
@@ -35,6 +35,9 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
     public void onBindViewHolder(ItemViewHolder holder, int position) {
         holder.name.setText(alarmList.get(position).getAlarmName());
         holder.time.setText(alarmList.get(position).getTime());
+        if (alarmList.get(position).getRepeatLoop().equals(RepeatLoop.ONE_TIME)) {
+            holder.repeating.setText(R.string.one_day_repeat);
+        } else holder.repeating.setText(R.string.every_day_repeat);
         holder.alarm = alarmList.get(position);
         setSwitch(holder, position);
     }
@@ -57,6 +60,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         private final int MENU_ITEM_DELETE = 1;
         private final TextView name;
         private final TextView time;
+        private final TextView repeating;
         private Switch aSwitch;
         private MyAlarm alarm;
 
@@ -64,6 +68,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.alarm_name);
             time = (TextView) itemView.findViewById(R.id.alarm_time);
+            repeating = (TextView) itemView.findViewById(R.id.repeating);
             aSwitch = (Switch) itemView.findViewById(R.id.alarm_switch);
 
             itemView.setOnCreateContextMenuListener(this);

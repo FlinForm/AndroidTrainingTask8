@@ -9,6 +9,8 @@
     <string name="cancel_button">Cancel</string>
     <string name="stop_alarm">Stop Alarm</string>
     <string name="sleep_for_5_min">Sleep for 5 min</string>
+    <string name="one_day_repeat">One time</string>
+    <string name="every_day_repeat">Every day</string>
 
     <string-array name="repeats">
         <item>One time</item>

@@ -33,7 +33,7 @@ public class AlarmsProvider extends ContentProvider {
             + ALARM_REPEATING + " text, "
             + ALARM_HOURS + " integer, "
             + ALARM_MINUTES + " integer, "
-            + ALARM_SWITCHED + " boolean" + ");";
+            + ALARM_SWITCHED + " text " + ");";
 
     // Uri's
     private static final String AUTHORITY = "com.epam.androidlab.androidtrainingtask8.serialization";

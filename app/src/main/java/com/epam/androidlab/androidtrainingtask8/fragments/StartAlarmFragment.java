@@ -106,8 +106,9 @@ public class StartAlarmFragment extends Fragment {
     }
 
     private void createAlarm() {
-        if ("".equals(editText.getText().toString())) {
-            Snackbar.make(view, "Enter, please, alarm name!", 1000).show();
+        if ("".equals(editText.getText().toString()) ||
+                !isUniqueNameChoosen(editText.getText().toString())) {
+            Snackbar.make(view, "Enter, please, unique name!", 1000).show();
             return;
         }
         if ("".equals(alarmRingtoneSpinner.getSelectedItem().toString())) {
@@ -125,7 +126,6 @@ public class StartAlarmFragment extends Fragment {
         MainActivity.getAlarms().add(alarm);
         MainActivity.getRecyclerView().getAdapter().notifyDataSetChanged();
         alarm.startAlarm(getContext(), alarm.getTimeInMillis());
-        System.out.println("started");
         cancel();
     }
 
@@ -143,6 +143,17 @@ public class StartAlarmFragment extends Fragment {
 
     private void cancel() {
         getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+    }
+
+    private boolean isUniqueNameChoosen(String name) {
+        for (MyAlarm alarm : MainActivity.getAlarms()) {
+            if (alarm.getAlarmName().equals(name)) {
+                System.out.println(false);
+                return false;
+            }
+        }
+        System.out.println(true);
+        return true;
     }
 
     private List<String> getRingtonesNames() {

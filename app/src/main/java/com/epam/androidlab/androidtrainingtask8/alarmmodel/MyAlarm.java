@@ -35,7 +35,15 @@ public class MyAlarm implements Serializable {
     }
 
     public String getTime() {
-        return Integer.toString(hours) + ":" + Integer.toString(minutes);
+        String formattedHours = Integer.toString(hours);
+        String formattedMinutes = Integer.toString(minutes);
+        if (hours < 10) {
+            formattedHours = "0" + Integer.toString(hours);
+        }
+        if (minutes < 10) {
+            formattedMinutes = "0" + Integer.toString(minutes);
+        }
+        return formattedHours + ":" + formattedMinutes;
     }
 
     public long getTimeInMillis() {
@@ -85,7 +93,6 @@ public class MyAlarm implements Serializable {
         if (!isSwitchedOn) {
             return;
         }
-
         alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, MyAlarmReceiver.class);
         intent.putExtra("ALARM_NAME", alarmName);
