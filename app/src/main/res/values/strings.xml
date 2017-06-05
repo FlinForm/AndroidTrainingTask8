@@ -2,8 +2,6 @@
     <string name="app_name">Android Training Task8</string>
     <string name="notifTitle">Alarm Clock</string>
     <string name="notifText">Wake up!!!</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="prompt">   </string>
     <string name="wake_up">Wake Up!</string>
     <string name="start_button">Start</string>
     <string name="cancel_button">Cancel</string>
@@ -11,6 +9,9 @@
     <string name="sleep_for_5_min">Sleep for 5 min</string>
     <string name="one_day_repeat">One time</string>
     <string name="every_day_repeat">Every day</string>
+    <string name="top_background_image">Top background image</string>
+    <string name="cardview_image">Cardview image</string>
+    <string name="alarm_name">Name</string>
 
     <string-array name="repeats">
         <item>One time</item>

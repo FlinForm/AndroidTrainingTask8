@@ -1,4 +1,4 @@
-package com.epam.androidlab.androidtrainingtask8;
+package com.epam.androidlab.androidtrainingtask8.activities;
 
 import android.app.KeyguardManager;
 import android.app.NotificationManager;
@@ -11,6 +11,7 @@ import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.epam.androidlab.androidtrainingtask8.R;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 
 public class MyAlarmReceiver extends BroadcastReceiver {
@@ -48,7 +49,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     private void showAlarm(Context context) {
         Intent intent = new Intent();
         intent.setClassName("com.epam.androidlab.androidtrainingtask8",
-                "com.epam.androidlab.androidtrainingtask8.WakeupActivity");
+                "com.epam.androidlab.androidtrainingtask8.activities.WakeupActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
@@ -73,7 +74,7 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
         Intent intent = new Intent();
         intent.setClassName("com.epam.androidlab.androidtrainingtask8",
-                "com.epam.androidlab.androidtrainingtask8.WakeupActivity");
+                "com.epam.androidlab.androidtrainingtask8.activities.WakeupActivity");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);

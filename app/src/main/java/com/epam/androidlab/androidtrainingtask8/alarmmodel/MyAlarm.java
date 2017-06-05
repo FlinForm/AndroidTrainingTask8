@@ -5,7 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.epam.androidlab.androidtrainingtask8.MyAlarmReceiver;
+import com.epam.androidlab.androidtrainingtask8.activities.MyAlarmReceiver;
 
 import java.io.Serializable;
 import java.util.Calendar;

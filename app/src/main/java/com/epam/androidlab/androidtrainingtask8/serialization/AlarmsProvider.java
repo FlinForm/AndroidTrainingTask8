@@ -38,7 +38,7 @@ public class AlarmsProvider extends ContentProvider {
     // Uri's
     private static final String AUTHORITY = "com.epam.androidlab.androidtrainingtask8.serialization";
     private static final String ALARMS_PATH = "alarms";
-    public static final Uri ALARMS_CONTENT_URI = Uri.parse("content://"
+    private static final Uri ALARMS_CONTENT_URI = Uri.parse("content://"
             + AUTHORITY + "/" + ALARMS_PATH);
     private static final String ALARM_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
             + AUTHORITY + "." + ALARMS_PATH;
@@ -65,18 +65,12 @@ public class AlarmsProvider extends ContentProvider {
 
     @Nullable
     @Override
-    // replace switch with if statement
     public Cursor query(@NonNull Uri uri,
                         @Nullable String[] projection,
                         @Nullable String selection,
                         @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
             switch (uriMatcher.match(uri)) {
-                case URI_ALARMS:
-                    if (TextUtils.isEmpty(sortOrder)) {
-                        sortOrder = ALARM_NAME + " ASC";
-                    }
-                    break;
                 case URI_ALARMS_ID:
                     String id = uri.getLastPathSegment();
                     if (TextUtils.isEmpty(selection)) {
@@ -106,9 +100,9 @@ public class AlarmsProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        if (uriMatcher.match(uri) != URI_ALARMS)
+        if (uriMatcher.match(uri) != URI_ALARMS) {
             throw new IllegalArgumentException("Wrong URI: " + uri);
-
+        }
         sqLiteDatabase = dbHelper.getWritableDatabase();
         long rowID = sqLiteDatabase.insert(ALARM_TABLE, null, values);
         Uri resultUri = ContentUris.withAppendedId(ALARMS_CONTENT_URI, rowID);
@@ -117,14 +111,10 @@ public class AlarmsProvider extends ContentProvider {
     }
 
     @Override
-    //replace switch with if statement
     public int delete(@NonNull Uri uri,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
         switch (uriMatcher.match(uri)) {
-            case URI_ALARMS:
-                //--------------
-                break;
             case URI_ALARMS_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
@@ -143,15 +133,11 @@ public class AlarmsProvider extends ContentProvider {
     }
 
     @Override
-    //replace switch with if statement
     public int update(@NonNull Uri uri,
                       @Nullable ContentValues values,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
         switch (uriMatcher.match(uri)) {
-            case URI_ALARMS:
-                //----------------
-                break;
             case URI_ALARMS_ID:
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
@@ -170,7 +156,6 @@ public class AlarmsProvider extends ContentProvider {
     }
 
     private class DBHelper extends SQLiteOpenHelper {
-        ContentValues cv;
 
         public DBHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
@@ -179,7 +164,6 @@ public class AlarmsProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DB_CREATE);
-            cv = new ContentValues();
         }
 
         @Override

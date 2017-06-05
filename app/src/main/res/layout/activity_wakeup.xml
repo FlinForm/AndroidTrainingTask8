@@ -6,13 +6,12 @@
     android:orientation="vertical">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:background="@drawable/wakeupkitkat" />
+        android:background="@drawable/wakeupkitkat"
+        android:contentDescription="@string/top_background_image" />
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="casual"

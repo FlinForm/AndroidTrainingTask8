@@ -1,4 +1,4 @@
-package com.epam.androidlab.androidtrainingtask8;
+package com.epam.androidlab.androidtrainingtask8.activities;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
@@ -9,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.epam.androidlab.androidtrainingtask8.R;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 
@@ -42,8 +43,8 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         setSwitch(holder, position);
     }
 
-    public void setSwitch(ItemViewHolder holder, int position) {
-        if (alarmList.get(position).isSwitchedOn() == true) {
+    private void setSwitch(ItemViewHolder holder, int position) {
+        if (alarmList.get(position).isSwitchedOn()) {
             holder.aSwitch.setChecked(true);
         } else {
             holder.aSwitch.setChecked(false);
@@ -61,7 +62,7 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         private final TextView name;
         private final TextView time;
         private final TextView repeating;
-        private Switch aSwitch;
+        private final Switch aSwitch;
         private MyAlarm alarm;
 
         public ItemViewHolder(View itemView) {

@@ -1,13 +1,14 @@
-package com.epam.androidlab.androidtrainingtask8;
+package com.epam.androidlab.androidtrainingtask8.activities;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.PowerManager;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.epam.androidlab.androidtrainingtask8.R;
 
 public class WakeupActivity extends AppCompatActivity {
 

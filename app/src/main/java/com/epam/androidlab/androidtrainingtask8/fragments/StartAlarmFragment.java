@@ -1,17 +1,12 @@
 package com.epam.androidlab.androidtrainingtask8.fragments;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.media.Ringtone;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +16,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
-import com.epam.androidlab.androidtrainingtask8.MainActivity;
-import com.epam.androidlab.androidtrainingtask8.MyAlarmReceiver;
+import com.epam.androidlab.androidtrainingtask8.activities.MainActivity;
 import com.epam.androidlab.androidtrainingtask8.R;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
@@ -78,7 +72,7 @@ public class StartAlarmFragment extends Fragment {
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(view.getContext(),
                 android.R.layout.simple_spinner_item, ringtones);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dataAdapter.add("");
+        dataAdapter.add("melody");
         alarmRingtoneSpinner.setAdapter(dataAdapter);
         alarmRingtoneSpinner.setSelection(ringtones.size() - 1);
         alarmRingtoneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

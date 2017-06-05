@@ -13,13 +13,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <receiver android:name=".MyAlarmReceiver" />
+        <receiver android:name=".activities.MyAlarmReceiver" />
 
         <provider
             android:name=".serialization.AlarmsProvider"
-            android:authorities="com.epam.androidlab.androidtrainingtask8.serialization" />
+            android:authorities="com.epam.androidlab.androidtrainingtask8.serialization"
+            android:exported="false" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WakeupActivity">
+        <activity android:name=".activities.WakeupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

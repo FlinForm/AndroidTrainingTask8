@@ -1,6 +1,5 @@
-package com.epam.androidlab.androidtrainingtask8;
+package com.epam.androidlab.androidtrainingtask8.activities;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -18,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.epam.androidlab.androidtrainingtask8.R;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.RepeatLoop;
 import com.epam.androidlab.androidtrainingtask8.fragments.StartAlarmFragment;
@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private static List<MyAlarm> alarms;
     private static RecyclerView recyclerView;
     public static MainActivity activity;
-   // SqlLiteParser sqlLiteParser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,12 +42,8 @@ public class MainActivity extends AppCompatActivity {
         ringtones = initRingtones(this);
         fillAlarmsArray();
 
-        //sqlLiteParser = new SqlLiteParser(getApplicationContext());
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
-
-        //sqlLiteParser.loadAlarms(alarms);
 
         FloatingActionButton floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         floatingActionButton.setOnClickListener(event -> startNewAlarm());
@@ -71,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Ringtone> initRingtones(Context context) {
         List<Ringtone> ringtoneList = new ArrayList<>();
-
         new AsyncTask<Void, Void, Void>() {
             @Override
             protected Void doInBackground(Void... params) {
@@ -113,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 alarms.add(alarm);
                 alarm.startAlarm(getApplicationContext(), alarm.getTimeInMillis());
             }
-            cursor.close();
+        cursor.close();
     }
 
     private void removeAlarm(String name, int position) {
