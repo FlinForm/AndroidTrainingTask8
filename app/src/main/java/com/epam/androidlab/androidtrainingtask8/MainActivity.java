@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.epam.androidlab.androidtrainingtask8.alarmmodel.MyAlarm;
 import com.epam.androidlab.androidtrainingtask8.fragments.StartAlarmFragment;
@@ -55,14 +56,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    /*@Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        //super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.recycler_view) {
-            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-            menu.add(Menu.NONE, 1, 1, "delete");
-        }
-    }*/
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        String[] title = item.getTitle().toString().split(" ");
+        removeAlarm(title[1]);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        return true;
+    }
 
     private List<Ringtone> initRingtones(Context context) {
         List<Ringtone> ringtoneList = new ArrayList<>();
@@ -92,6 +92,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.rLayout, new StartAlarmFragment());
         transaction.commit();
+    }
+
+    private MyAlarm removeAlarm(String name) {
+        for (MyAlarm alarm : alarms) {
+            if (alarm.getAlarmName().equals(name))
+                alarms.remove(alarm);
+        }
+        return null;
     }
 
     public static List<Ringtone> getRingtones() {

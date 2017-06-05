@@ -1,6 +1,7 @@
 package com.epam.androidlab.androidtrainingtask8;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,14 +38,23 @@ public class RecycleViewAdapter extends RecyclerView.Adapter<RecycleViewAdapter.
         return alarmList.size();
     }
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
-        final TextView name;
-        final TextView time;
+    public static class ItemViewHolder extends RecyclerView.ViewHolder
+    implements View.OnCreateContextMenuListener {
+        private final int MENU_ITEM_DELETE = 1;
+        private final TextView name;
+        private final TextView time;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.alarm_name);
             time = (TextView) itemView.findViewById(R.id.alarm_time);
+
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.add(0, MENU_ITEM_DELETE, 0, "delete" + " " + name.getText().toString());
         }
     }
 }

@@ -20,7 +20,6 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        System.out.println("onRecieve");
         getAlarmForName(intent.getStringExtra("ALARM_NAME"));
         ringtone =  getRingtoneForName(alarm.getAlarmRingtone(), context);
         KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
